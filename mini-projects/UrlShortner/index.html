@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Quantique - BGCE ARCHIVE</title>
+        <title>Urlshortner - BGCE ARCHIVE</title>
 
 
         <!-- Custom HTML head -->
@@ -158,72 +158,99 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>[<strong>Author:</strong> @mdimamhosen
-<strong>Date:</strong> 2025-04-23
-<strong>Category:</strong> e.g., mini-projects/Quantique
-<strong>Tags:</strong> [go, Quantique, mini-projects]
-]</p>
-<h1 id="-quantique---unit-converter-cli"><a class="header" href="#-quantique---unit-converter-cli">🔁 Quantique - Unit Converter CLI</a></h1>
-<p><strong>Quantique</strong> is a beautiful CLI-based Unit Converter written in Go.<br />
-Easily convert between popular units with a modern, stylish terminal interface using <code>box-cli-maker</code> and <code>fatih/color</code>.</p>
-<hr />
-<h2 id="-features"><a class="header" href="#-features">🚀 Features</a></h2>
+                        <h1 id="url-shortener---go"><a class="header" href="#url-shortener---go">URL Shortener - Go</a></h1>
+<p>A simple URL shortening service built with Go and MySQL. This project allows users to generate short URLs and redirect to the original long URL using a unique key.</p>
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
-<li>✅ Convert:
-<ol>
-<li>Meters ⇌ Feet</li>
-<li>Feet ⇌ Meters</li>
-<li>Celsius ⇌ Fahrenheit</li>
-<li>Fahrenheit ⇌ Celsius</li>
-<li>Kilograms ⇌ Pounds</li>
-<li>Pounds ⇌ Kilograms</li>
-</ol>
-</li>
-<li>🎨 Elegant terminal UI with colors and box layout</li>
-<li>🔁 Seamless interactive loop with graceful exit</li>
+<li>Generate short URLs with unique keys</li>
+<li>Redirect to the original URL</li>
+<li>MySQL integration for URL storage</li>
+<li>JSON-based HTTP API</li>
+<li>Environment variable support via <code>.env</code> file</li>
 </ul>
-<hr />
-<h2 id="-dependencies"><a class="header" href="#-dependencies">📦 Dependencies</a></h2>
-<p>Make sure you have <a href="https://golang.org/dl/">Go</a> installed.</p>
-<p>Initialize a Go module and install the required libraries:</p>
-<pre><code class="language-bash">go mod init quantique
-go get github.com/fatih/color
-go get github.com/Delta456/box-cli-maker/v2
+<h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
+<pre><code>UrlShortner-Go/
+├── config/            # Loads MySQL connection using env vars
+├── database/
+│   └── mysql.go       # MySQL operations for saving and retrieving URLs
+├── handlers/
+│   └── UrlHandler.go  # HTTP handlers for shortening and redirecting
+├── models/            # Request/response models
+├── utils/
+│   └── utils.go       # Random key generation
+├── .env               # Environment variables
+└── main.go            # Entry point of the server
 </code></pre>
-<hr />
-<h2 id="-how-to-run"><a class="header" href="#-how-to-run">🛠️ How to Run</a></h2>
-<pre><code class="language-bash">go build quantique.go
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<ol>
+<li>
+<p>Clone the repository:</p>
+<pre><code class="language-bash">git clone https://github.com/0baydullah/UrlShortner-Go.git
 </code></pre>
-<pre><code class="language-bash">./quantique.exe
+</li>
+<li>
+<p>Navigate to the project directory:</p>
+<pre><code class="language-bash">cd UrlShortner-Go
 </code></pre>
-<hr />
-<h2 id="-cli-preview"><a class="header" href="#-cli-preview">📸 CLI Preview</a></h2>
-<pre><code>╔════════════════════════════════════════════════════╗
-║                     UNIT CONVERTER                ║
-║  Convert Meters ⇌ Feet | Celsius ⇌ Fahrenheit     ║
-║          | Kilograms ⇌ Pounds                     ║
-╚════════════════════════════════════════════════════╝
+</li>
+<li>
+<p>Set up your MySQL database and table:</p>
+<pre><code class="language-sql">CREATE DATABASE urlshortener;
+USE urlshortener;
+CREATE TABLE urls (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    short_key VARCHAR(255) NOT NULL UNIQUE,
+    original_url TEXT NOT NULL
+);
 </code></pre>
-<hr />
-<h2 id="-file-structure"><a class="header" href="#-file-structure">📁 File Structure</a></h2>
-<pre><code>Quantique/
-├── go.mod
-├── go.sum
-└── main.go
+</li>
+<li>
+<p>Create a <code>.env</code> file in the root directory:</p>
+<pre><code class="language-env">DB_USER=your_db_username
+DB_PASSWORD=your_db_password
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=urlshortener
 </code></pre>
-<hr />
-<h2 id="-a-note-from-the-author"><a class="header" href="#-a-note-from-the-author">🤝 A Note from the Author</a></h2>
-<p>A small contribution to the incredible Best GoLang Community Ever</p>
+</li>
+<li>
+<p>Run the application:</p>
+<pre><code class="language-bash">go run main.go
+</code></pre>
+</li>
+</ol>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<h3 id="shorten-a-url"><a class="header" href="#shorten-a-url">Shorten a URL</a></h3>
+<p>Send a <code>POST</code> request to <code>/shorten</code>:</p>
+<pre><code class="language-bash">curl -X POST http://localhost:8081/shorten -H "Content-Type: application/json" -d '{"url": "https://example.com"}'
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "key": "abc123",
+  "url": "https://example.com",
+  "shortUrl": "http://localhost:8081/abc123"
+}
+</code></pre>
+<p>or If you want to  test it you can use <code>PostMan</code> too! ;-)</p>
+<h3 id="here-is-a-preview-from-postman-had-been-hosted-on-a-free-vps-maybe-expired-already"><a class="header" href="#here-is-a-preview-from-postman-had-been-hosted-on-a-free-vps-maybe-expired-already">Here is a preview from Postman (had been hosted on a free VPS, maybe expired already)</a></h3>
+<p><img src="https://github.com/0baydullah/UrlShortner-Go/blob/main/image.png?raw=true" alt="App Preview" /></p>
+<h3 id="redirect-to-original-url"><a class="header" href="#redirect-to-original-url">Redirect to Original URL</a></h3>
+<p>Visit the shortened URL:</p>
+<pre><code class="language-bash">http://localhost:8081/abc123
+</code></pre>
+<p>This will redirect to <code>https://example.com</code>.</p>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Contributions are welcome! Feel free to open issues or submit pull requests.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../mini-projects/1-cards/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../mini-projects/Quantique/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../mini-projects/UrlShortner/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../mini-projects/ccwc/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -233,11 +260,11 @@ go get github.com/Delta456/box-cli-maker/v2
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../mini-projects/1-cards/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../mini-projects/Quantique/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../mini-projects/UrlShortner/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../mini-projects/ccwc/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

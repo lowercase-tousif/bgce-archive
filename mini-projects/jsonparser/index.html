@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Quantique - BGCE ARCHIVE</title>
+        <title>Jsonparser - BGCE ARCHIVE</title>
 
 
         <!-- Custom HTML head -->
@@ -158,72 +158,165 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>[<strong>Author:</strong> @mdimamhosen
-<strong>Date:</strong> 2025-04-23
-<strong>Category:</strong> e.g., mini-projects/Quantique
-<strong>Tags:</strong> [go, Quantique, mini-projects]
-]</p>
-<h1 id="-quantique---unit-converter-cli"><a class="header" href="#-quantique---unit-converter-cli">🔁 Quantique - Unit Converter CLI</a></h1>
-<p><strong>Quantique</strong> is a beautiful CLI-based Unit Converter written in Go.<br />
-Easily convert between popular units with a modern, stylish terminal interface using <code>box-cli-maker</code> and <code>fatih/color</code>.</p>
-<hr />
-<h2 id="-features"><a class="header" href="#-features">🚀 Features</a></h2>
-<ul>
-<li>✅ Convert:
-<ol>
-<li>Meters ⇌ Feet</li>
-<li>Feet ⇌ Meters</li>
-<li>Celsius ⇌ Fahrenheit</li>
-<li>Fahrenheit ⇌ Celsius</li>
-<li>Kilograms ⇌ Pounds</li>
-<li>Pounds ⇌ Kilograms</li>
-</ol>
-</li>
-<li>🎨 Elegant terminal UI with colors and box layout</li>
-<li>🔁 Seamless interactive loop with graceful exit</li>
-</ul>
-<hr />
-<h2 id="-dependencies"><a class="header" href="#-dependencies">📦 Dependencies</a></h2>
-<p>Make sure you have <a href="https://golang.org/dl/">Go</a> installed.</p>
-<p>Initialize a Go module and install the required libraries:</p>
-<pre><code class="language-bash">go mod init quantique
-go get github.com/fatih/color
-go get github.com/Delta456/box-cli-maker/v2
+                        <p>🧩 Project: Build Your Own JSON Parser (Step 1)</p>
+<p>Imagine JSON like Lego blocks that computers use to send and understand data. In this project, we’re learning how to read those blocks and say: “Yep, this is built correctly!” or “Nope, something’s wrong!”</p>
+<p>⸻</p>
+<p>🪜 Step-by-Step Guide for Step 1</p>
+<p>🛠 Step 0: Setup</p>
+<p>“Before we play the game, we need to set up the board.”</p>
+<pre><code>1.	Create folders like this:
 </code></pre>
-<hr />
-<h2 id="-how-to-run"><a class="header" href="#-how-to-run">🛠️ How to Run</a></h2>
-<pre><code class="language-bash">go build quantique.go
+<pre><code class="language-readme">jsonparser/
+├── main.go
+├── lexer/
+│ └── lexer.go
+├── parser/
+│ └── parser.go
+├── tests/
+│ └── step1/
+│ ├── valid.json
+│ └── invalid.json
 </code></pre>
-<pre><code class="language-bash">./quantique.exe
+<pre><code>2.	Put this in tests/step1/valid.json
 </code></pre>
-<hr />
-<h2 id="-cli-preview"><a class="header" href="#-cli-preview">📸 CLI Preview</a></h2>
-<pre><code>╔════════════════════════════════════════════════════╗
-║                     UNIT CONVERTER                ║
-║  Convert Meters ⇌ Feet | Celsius ⇌ Fahrenheit     ║
-║          | Kilograms ⇌ Pounds                     ║
-╚════════════════════════════════════════════════════╝
+<p><code>{}</code></p>
+<pre><code>3.	Put this in tests/step1/invalid.json
 </code></pre>
-<hr />
-<h2 id="-file-structure"><a class="header" href="#-file-structure">📁 File Structure</a></h2>
-<pre><code>Quantique/
-├── go.mod
-├── go.sum
-└── main.go
+<p><code>{</code></p>
+<p>⸻</p>
+<p>🧠 Step 1: Understand What We’re Building</p>
+<p>“We’re building a tool that checks if a JSON is okay or broken.”</p>
+<p>We want to:
+• Read a file.
+• Break it into pieces (like Lego blocks).
+• Check if those pieces make a real object ({}).
+• Say “Valid JSON” ✅ or “Invalid JSON” ❌.</p>
+<p>⸻</p>
+<p>🧪 The Parts of Our Tool</p>
+<p>1️⃣ main.go — the commander</p>
+<p>It reads the file, sends it to the lexer, then the parser, and prints the result.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "os"
+
+    "jsonparser/lexer"
+    "jsonparser/parser"
+)
+
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Println("Usage: ./jsonparser &lt;path-to-json-file&gt;")
+        os.Exit(1)
+    }
+
+    filePath := os.Args[1]
+    data, err := os.ReadFile(filePath)
+    if err != nil {
+    	fmt.Printf("Failed to read file: %v\n", err)
+    	os.Exit(1)
+    }
+
+    tokens := lexer.Tokenize(string(data))
+    if parser.Parse(tokens) {
+    	fmt.Println("Valid JSON")
+    	os.Exit(0)
+    } else {
+    	fmt.Println("Invalid JSON")
+    	os.Exit(1)
+    }
+}
 </code></pre>
-<hr />
-<h2 id="-a-note-from-the-author"><a class="header" href="#-a-note-from-the-author">🤝 A Note from the Author</a></h2>
-<p>A small contribution to the incredible Best GoLang Community Ever</p>
+<p>⸻</p>
+<p>2️⃣ lexer/lexer.go — the scanner</p>
+<p>It breaks the string like {} into tokens (chunks), like:</p>
+<p>[LEFT_BRACE, RIGHT_BRACE]</p>
+<pre><code class="language-go">package lexer
+
+import "strings"
+
+type TokenType string
+
+const (
+    LEFT_BRACE TokenType = "{"
+    RIGHT_BRACE TokenType = "}"
+    ILLEGAL TokenType = "ILLEGAL"
+    EOF TokenType = "EOF"
+)
+
+type Token struct {
+    Type TokenType
+    Literal string
+}
+
+func Tokenize(input string) []Token {
+    var tokens []Token
+    input = strings.TrimSpace(input)
+
+    for _, ch := range input {
+    	switch ch {
+    	case '{':
+    		tokens = append(tokens, Token{Type: LEFT_BRACE, Literal: "{"})
+    	case '}':
+    		tokens = append(tokens, Token{Type: RIGHT_BRACE, Literal: "}"})
+    	default:
+    		// not a valid character in step 1
+    		tokens = append(tokens, Token{Type: ILLEGAL, Literal: string(ch)})
+    	}
+    }
+
+    tokens = append(tokens, Token{Type: EOF, Literal: ""})
+    return tokens
+}
+</code></pre>
+<p>⸻</p>
+<p>3️⃣ parser/parser.go — the judge</p>
+<p>It looks at the tokens and decides if it’s correct.</p>
+<pre><code class="language-go">package parser
+
+import "jsonparser/lexer"
+
+func Parse(tokens []lexer.Token) bool {
+    // Step 1: Only valid thing is [LEFT_BRACE, RIGHT_BRACE, EOF]
+    if len(tokens) != 3 {
+        return false
+    }
+
+    return tokens[0].Type == lexer.LEFT_BRACE &amp;&amp;
+    	tokens[1].Type == lexer.RIGHT_BRACE &amp;&amp;
+    	tokens[2].Type == lexer.EOF
+
+}
+</code></pre>
+<p>⸻</p>
+<p>▶️ Run It!</p>
+<p>Go into your terminal and run this:</p>
+<pre><code class="language-bash">go run main.go tests/step1/valid.json # ✅ Should print: Valid JSON
+go run main.go tests/step1/invalid.json # ❌ Should print: Invalid JSON
+</code></pre>
+<p>⸻</p>
+<p>🎓 What Did We Learn?
+• ✅ JSON is just a way to store data, like a toy box.
+• ✅ Lexers break it into tokens (like sorting toys).
+• ✅ Parsers check if the toys are arranged correctly.
+• ✅ We only accept {} right now.
+• ❌ Anything else is “broken” JSON.</p>
+<p>⸻</p>
+<p>🧠 Coming Next…</p>
+<p>In Step 2, we’ll look inside the box and check for strings like:</p>
+<p>{"key": "value"}</p>
+<p>⸻</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../mini-projects/1-cards/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../mini-projects/ccwc/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../mini-projects/UrlShortner/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../mini-projects/todo-cli/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -233,11 +326,11 @@ go get github.com/Delta456/box-cli-maker/v2
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../mini-projects/1-cards/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../mini-projects/ccwc/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../mini-projects/UrlShortner/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../mini-projects/todo-cli/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -7852,9 +7852,92 @@ go get github.com/Delta456/box-cli-maker/v2
 <hr />
 <h2 id="-a-note-from-the-author"><a class="header" href="#-a-note-from-the-author">🤝 A Note from the Author</a></h2>
 <p>A small contribution to the incredible Best GoLang Community Ever</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="url-shortener---go"><a class="header" href="#url-shortener---go">URL Shortener - Go</a></h1>
+<p>A simple URL shortening service built with Go and MySQL. This project allows users to generate short URLs and redirect to the original long URL using a unique key.</p>
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<ul>
+<li>Generate short URLs with unique keys</li>
+<li>Redirect to the original URL</li>
+<li>MySQL integration for URL storage</li>
+<li>JSON-based HTTP API</li>
+<li>Environment variable support via <code>.env</code> file</li>
+</ul>
+<h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
+<pre><code>UrlShortner-Go/
+├── config/            # Loads MySQL connection using env vars
+├── database/
+│   └── mysql.go       # MySQL operations for saving and retrieving URLs
+├── handlers/
+│   └── UrlHandler.go  # HTTP handlers for shortening and redirecting
+├── models/            # Request/response models
+├── utils/
+│   └── utils.go       # Random key generation
+├── .env               # Environment variables
+└── main.go            # Entry point of the server
+</code></pre>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<ol>
+<li>
+<p>Clone the repository:</p>
+<pre><code class="language-bash">git clone https://github.com/0baydullah/UrlShortner-Go.git
+</code></pre>
+</li>
+<li>
+<p>Navigate to the project directory:</p>
+<pre><code class="language-bash">cd UrlShortner-Go
+</code></pre>
+</li>
+<li>
+<p>Set up your MySQL database and table:</p>
+<pre><code class="language-sql">CREATE DATABASE urlshortener;
+USE urlshortener;
+CREATE TABLE urls (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    short_key VARCHAR(255) NOT NULL UNIQUE,
+    original_url TEXT NOT NULL
+);
+</code></pre>
+</li>
+<li>
+<p>Create a <code>.env</code> file in the root directory:</p>
+<pre><code class="language-env">DB_USER=your_db_username
+DB_PASSWORD=your_db_password
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=urlshortener
+</code></pre>
+</li>
+<li>
+<p>Run the application:</p>
+<pre><code class="language-bash">go run main.go
+</code></pre>
+</li>
+</ol>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<h3 id="shorten-a-url"><a class="header" href="#shorten-a-url">Shorten a URL</a></h3>
+<p>Send a <code>POST</code> request to <code>/shorten</code>:</p>
+<pre><code class="language-bash">curl -X POST http://localhost:8081/shorten -H "Content-Type: application/json" -d '{"url": "https://example.com"}'
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "key": "abc123",
+  "url": "https://example.com",
+  "shortUrl": "http://localhost:8081/abc123"
+}
+</code></pre>
+<p>or If you want to  test it you can use <code>PostMan</code> too! ;-)</p>
+<h3 id="here-is-a-preview-from-postman-had-been-hosted-on-a-free-vps-maybe-expired-already"><a class="header" href="#here-is-a-preview-from-postman-had-been-hosted-on-a-free-vps-maybe-expired-already">Here is a preview from Postman (had been hosted on a free VPS, maybe expired already)</a></h3>
+<p><img src="https://github.com/0baydullah/UrlShortner-Go/blob/main/image.png?raw=true" alt="App Preview" /></p>
+<h3 id="redirect-to-original-url"><a class="header" href="#redirect-to-original-url">Redirect to Original URL</a></h3>
+<p>Visit the shortened URL:</p>
+<pre><code class="language-bash">http://localhost:8081/abc123
+</code></pre>
+<p>This will redirect to <code>https://example.com</code>.</p>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Contributions are welcome! Feel free to open issues or submit pull requests.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ccwc-custom-word-count"><a class="header" href="#ccwc-custom-word-count">CCWC (Custom Word Count)</a></h1>
 <p>A Go implementation of the Unix/Linux <code>wc</code> command that counts bytes, lines, words, and characters in text files.</p>
-<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<h2 id="features-1"><a class="header" href="#features-1">Features</a></h2>
 <ul>
 <li>Count bytes in a file (<code>-c</code>)</li>
 <li>Count lines in a file (<code>-l</code>)</li>
@@ -7863,7 +7946,7 @@ go get github.com/Delta456/box-cli-maker/v2
 <li>Support for reading from both files and standard input (stdin)</li>
 <li>Default mode that displays line, word, and byte counts together</li>
 </ul>
-<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
 <ol>
 <li>Ensure you have Go installed on your system</li>
 <li>Navigate to the project directory:</li>
@@ -7875,7 +7958,7 @@ go get github.com/Delta456/box-cli-maker/v2
 </ol>
 <pre><code class="language-bash">go build -o ccwc ./cmd/ccwc
 </code></pre>
-<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
 <h3 id="basic-usage"><a class="header" href="#basic-usage">Basic Usage</a></h3>
 <pre><code class="language-bash">./ccwc [options] [filename]
 </code></pre>
@@ -7919,7 +8002,7 @@ go get github.com/Delta456/box-cli-maker/v2
 </ol>
 <pre><code class="language-bash">cat testdata/test.txt | ./ccwc -m
 </code></pre>
-<h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
+<h2 id="project-structure-1"><a class="header" href="#project-structure-1">Project Structure</a></h2>
 <pre><code>mini-projects/ccwc/
 ├── cmd/
 │   └── ccwc/
@@ -7953,18 +8036,167 @@ go get github.com/Delta456/box-cli-maker/v2
 </ul>
 </li>
 </ol>
-<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<h2 id="contributing-1"><a class="header" href="#contributing-1">Contributing</a></h2>
 <p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
+<div style="break-before: page; page-break-before: always;"></div><p>🧩 Project: Build Your Own JSON Parser (Step 1)</p>
+<p>Imagine JSON like Lego blocks that computers use to send and understand data. In this project, we’re learning how to read those blocks and say: “Yep, this is built correctly!” or “Nope, something’s wrong!”</p>
+<p>⸻</p>
+<p>🪜 Step-by-Step Guide for Step 1</p>
+<p>🛠 Step 0: Setup</p>
+<p>“Before we play the game, we need to set up the board.”</p>
+<pre><code>1.	Create folders like this:
+</code></pre>
+<pre><code class="language-readme">jsonparser/
+├── main.go
+├── lexer/
+│ └── lexer.go
+├── parser/
+│ └── parser.go
+├── tests/
+│ └── step1/
+│ ├── valid.json
+│ └── invalid.json
+</code></pre>
+<pre><code>2.	Put this in tests/step1/valid.json
+</code></pre>
+<p><code>{}</code></p>
+<pre><code>3.	Put this in tests/step1/invalid.json
+</code></pre>
+<p><code>{</code></p>
+<p>⸻</p>
+<p>🧠 Step 1: Understand What We’re Building</p>
+<p>“We’re building a tool that checks if a JSON is okay or broken.”</p>
+<p>We want to:
+• Read a file.
+• Break it into pieces (like Lego blocks).
+• Check if those pieces make a real object ({}).
+• Say “Valid JSON” ✅ or “Invalid JSON” ❌.</p>
+<p>⸻</p>
+<p>🧪 The Parts of Our Tool</p>
+<p>1️⃣ main.go — the commander</p>
+<p>It reads the file, sends it to the lexer, then the parser, and prints the result.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "os"
+
+    "jsonparser/lexer"
+    "jsonparser/parser"
+)
+
+func main() {
+    if len(os.Args) &lt; 2 {
+        fmt.Println("Usage: ./jsonparser &lt;path-to-json-file&gt;")
+        os.Exit(1)
+    }
+
+    filePath := os.Args[1]
+    data, err := os.ReadFile(filePath)
+    if err != nil {
+    	fmt.Printf("Failed to read file: %v\n", err)
+    	os.Exit(1)
+    }
+
+    tokens := lexer.Tokenize(string(data))
+    if parser.Parse(tokens) {
+    	fmt.Println("Valid JSON")
+    	os.Exit(0)
+    } else {
+    	fmt.Println("Invalid JSON")
+    	os.Exit(1)
+    }
+}
+</code></pre>
+<p>⸻</p>
+<p>2️⃣ lexer/lexer.go — the scanner</p>
+<p>It breaks the string like {} into tokens (chunks), like:</p>
+<p>[LEFT_BRACE, RIGHT_BRACE]</p>
+<pre><code class="language-go">package lexer
+
+import "strings"
+
+type TokenType string
+
+const (
+    LEFT_BRACE TokenType = "{"
+    RIGHT_BRACE TokenType = "}"
+    ILLEGAL TokenType = "ILLEGAL"
+    EOF TokenType = "EOF"
+)
+
+type Token struct {
+    Type TokenType
+    Literal string
+}
+
+func Tokenize(input string) []Token {
+    var tokens []Token
+    input = strings.TrimSpace(input)
+
+    for _, ch := range input {
+    	switch ch {
+    	case '{':
+    		tokens = append(tokens, Token{Type: LEFT_BRACE, Literal: "{"})
+    	case '}':
+    		tokens = append(tokens, Token{Type: RIGHT_BRACE, Literal: "}"})
+    	default:
+    		// not a valid character in step 1
+    		tokens = append(tokens, Token{Type: ILLEGAL, Literal: string(ch)})
+    	}
+    }
+
+    tokens = append(tokens, Token{Type: EOF, Literal: ""})
+    return tokens
+}
+</code></pre>
+<p>⸻</p>
+<p>3️⃣ parser/parser.go — the judge</p>
+<p>It looks at the tokens and decides if it’s correct.</p>
+<pre><code class="language-go">package parser
+
+import "jsonparser/lexer"
+
+func Parse(tokens []lexer.Token) bool {
+    // Step 1: Only valid thing is [LEFT_BRACE, RIGHT_BRACE, EOF]
+    if len(tokens) != 3 {
+        return false
+    }
+
+    return tokens[0].Type == lexer.LEFT_BRACE &amp;&amp;
+    	tokens[1].Type == lexer.RIGHT_BRACE &amp;&amp;
+    	tokens[2].Type == lexer.EOF
+
+}
+</code></pre>
+<p>⸻</p>
+<p>▶️ Run It!</p>
+<p>Go into your terminal and run this:</p>
+<pre><code class="language-bash">go run main.go tests/step1/valid.json # ✅ Should print: Valid JSON
+go run main.go tests/step1/invalid.json # ❌ Should print: Invalid JSON
+</code></pre>
+<p>⸻</p>
+<p>🎓 What Did We Learn?
+• ✅ JSON is just a way to store data, like a toy box.
+• ✅ Lexers break it into tokens (like sorting toys).
+• ✅ Parsers check if the toys are arranged correctly.
+• ✅ We only accept {} right now.
+• ❌ Anything else is “broken” JSON.</p>
+<p>⸻</p>
+<p>🧠 Coming Next…</p>
+<p>In Step 2, we’ll look inside the box and check for strings like:</p>
+<p>{"key": "value"}</p>
+<p>⸻</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="todo-cli"><a class="header" href="#todo-cli">Todo CLI</a></h1>
 <p>A simple command-line interface (CLI) application for managing your to-do tasks, built with Go.</p>
-<h2 id="features-1"><a class="header" href="#features-1">Features</a></h2>
+<h2 id="features-2"><a class="header" href="#features-2">Features</a></h2>
 <ul>
 <li>Add new tasks</li>
 <li>List all tasks (with --all flag for completed tasks)</li>
 <li>Mark tasks as completed</li>
 <li>Delete tasks</li>
 </ul>
-<h2 id="project-structure-1"><a class="header" href="#project-structure-1">Project Structure</a></h2>
+<h2 id="project-structure-2"><a class="header" href="#project-structure-2">Project Structure</a></h2>
 <pre><code>todo-cli/
 ├── cmd/
 │   └── tasks/
@@ -7974,7 +8206,7 @@ go get github.com/Delta456/box-cli-maker/v2
         ├── task.go
         └── storage.go
 </code></pre>
-<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
+<h2 id="installation-2"><a class="header" href="#installation-2">Installation</a></h2>
 <ol>
 <li>Clone the repository:
 <pre><code class="language-bash">git clone https://github.com/OxRokib/bgce-archive.git
@@ -7989,7 +8221,7 @@ go get github.com/Delta456/box-cli-maker/v2
 </code></pre>
 </li>
 </ol>
-<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
+<h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
 <h3 id="add-a-task"><a class="header" href="#add-a-task">Add a Task</a></h3>
 <pre><code class="language-bash">./todo add "Your task description"
 </code></pre>
@@ -8006,7 +8238,7 @@ go get github.com/Delta456/box-cli-maker/v2
 <h3 id="delete-a-task"><a class="header" href="#delete-a-task">Delete a Task</a></h3>
 <pre><code class="language-bash">./todo delete &lt;task-id&gt;
 </code></pre>
-<h2 id="contributing-1"><a class="header" href="#contributing-1">Contributing</a></h2>
+<h2 id="contributing-2"><a class="header" href="#contributing-2">Contributing</a></h2>
 <p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
 <div style="break-before: page; page-break-before: always;"></div><p><strong>comprehensive and detailed RBAC permission list</strong> Golang Community Vault platform. This will allow <strong>fine-grained control</strong> for various roles across all the directories and content types outlined in README.</p>
 <hr />
